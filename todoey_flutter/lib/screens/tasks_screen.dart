@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todoey_flutter/models/task_data.dart';
 import 'package:todoey_flutter/screens/add_task_screen.dart';
+import 'package:todoey_flutter/theme.dart';
 import 'package:todoey_flutter/widgets/tasks_list.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_switch/sliding_switch.dart';
@@ -73,22 +74,33 @@ class TasksScreen extends StatelessWidget {
                 ),
                 SlidingSwitch(
                   value: false,
-                  width: 150,
+                  width: 125,
                   onChanged: (bool value) {
-                    print(value);
+                    Provider.of<CustomTheme>(context, listen: false)
+                        .toggleTheme();
                   },
                   height: 25,
-                  animationDuration: const Duration(milliseconds: 50),
+                  animationDuration: const Duration(milliseconds: 100),
                   onTap: () {},
                   onDoubleTap: () {},
                   onSwipe: () {},
                   textOff: "Light",
                   textOn: "Dark",
-                  colorOn: const Color(0xffdc6c73),
-                  colorOff: const Color(0xff6682c0),
-                  background: const Color(0xffe4e5eb),
-                  buttonColor: const Color(0xfff7f5f7),
-                  inactiveColor: const Color(0xff636f7b),
+                  colorOn: Provider.of<CustomTheme>(context).isTheme
+                      ? Colors.lightBlueAccent
+                      : Colors.white,
+                  colorOff: Provider.of<CustomTheme>(context).isTheme
+                      ? Color(0xff6682c0)
+                      : Color(0xffbdbdbd),
+                  background: Provider.of<CustomTheme>(context).isTheme
+                      ? Color(0xffe4e5eb)
+                      : Color(0xff9e9e9e),
+                  buttonColor: Provider.of<CustomTheme>(context).isTheme
+                      ? Color(0xfff7f5f7)
+                      : Color(0xff757575),
+                  inactiveColor: Provider.of<CustomTheme>(context).isTheme
+                      ? Color(0xff636f7b)
+                      : Color(0xff636f7b),
                 ),
               ],
             ),

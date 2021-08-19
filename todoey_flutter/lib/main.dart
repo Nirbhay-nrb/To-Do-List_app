@@ -11,12 +11,24 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => TaskData(),
-      child: MaterialApp(
-        theme: CustomTheme.darkTheme,
-        home: TasksScreen(),
-      ),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(value: TaskData()),
+        ChangeNotifierProvider.value(value: CustomTheme()),
+      ],
+      child: Home(),
+    );
+  }
+}
+
+class Home extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: Provider.of<CustomTheme>(context).isTheme
+          ? CustomTheme.lightTheme
+          : CustomTheme.darkTheme,
+      home: TasksScreen(),
     );
   }
 }

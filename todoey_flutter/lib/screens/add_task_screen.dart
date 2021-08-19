@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todoey_flutter/models/task_data.dart';
 
+import '../theme.dart';
+
 class AddTaskScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String newTaskTitle;
     return Container(
-      color: Color(0xFF757575),
+      color: Provider.of<CustomTheme>(context).isTheme
+          ? Color(0xFF757575)
+          : Color(0xFF2E2E2E),
       child: Container(
         padding: EdgeInsets.symmetric(
           horizontal: 30,
@@ -34,6 +38,11 @@ class AddTaskScreen extends StatelessWidget {
               onChanged: (value) {
                 newTaskTitle = value;
               },
+              style: TextStyle(
+                color: Provider.of<CustomTheme>(context).isTheme
+                    ? Colors.black
+                    : Colors.white,
+              ),
             ),
             SizedBox(
               height: 15,

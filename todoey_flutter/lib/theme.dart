@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
-class CustomTheme {
+class CustomTheme extends ChangeNotifier {
+  bool isTheme = true;
+
   static ThemeData get lightTheme {
     return ThemeData(
       primaryColor: Colors.black,
@@ -39,5 +41,10 @@ class CustomTheme {
         bodyText2: TextStyle(color: Colors.white, fontSize: 20),
       ),
     );
+  }
+
+  void toggleTheme() {
+    isTheme = !isTheme;
+    notifyListeners();
   }
 }
