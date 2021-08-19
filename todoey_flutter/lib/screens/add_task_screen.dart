@@ -14,7 +14,7 @@ class AddTaskScreen extends StatelessWidget {
           vertical: 20,
         ),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).accentColor,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(20),
             topRight: Radius.circular(20),
@@ -26,10 +26,7 @@ class AddTaskScreen extends StatelessWidget {
             Text(
               'Add Task',
               textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.lightBlueAccent,
-                fontSize: 30,
-              ),
+              style: Theme.of(context).textTheme.bodyText1,
             ),
             TextField(
               autofocus: true,
@@ -42,11 +39,13 @@ class AddTaskScreen extends StatelessWidget {
               height: 15,
             ),
             FlatButton(
-              color: Colors.lightBlueAccent,
+              color: Theme.of(context).scaffoldBackgroundColor,
               child: Padding(
                 padding: EdgeInsets.all(10.0),
-                child: Text('Add',
-                    style: TextStyle(color: Colors.white, fontSize: 20)),
+                child: Text(
+                  'Add',
+                  style: Theme.of(context).textTheme.bodyText2,
+                ),
               ),
               onPressed: () {
                 Provider.of<TaskData>(context, listen: false)
