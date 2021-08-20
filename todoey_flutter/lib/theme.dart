@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CustomTheme extends ChangeNotifier {
   bool isTheme = true;
@@ -45,6 +46,18 @@ class CustomTheme extends ChangeNotifier {
 
   void toggleTheme() {
     isTheme = !isTheme;
+    setIsTheme();
     notifyListeners();
+  }
+
+  void getIsTheme() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    isTheme = preferences.getBool("isTheme") ?? true;
+    notifyListeners();
+  }
+
+  void setIsTheme() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.setBool("isTheme", isTheme);
   }
 }

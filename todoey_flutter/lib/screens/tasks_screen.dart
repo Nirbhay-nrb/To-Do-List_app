@@ -5,6 +5,7 @@ import 'package:todoey_flutter/theme.dart';
 import 'package:todoey_flutter/widgets/tasks_list.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_switch/sliding_switch.dart';
+import 'package:todoey_flutter/main.dart';
 
 class TasksScreen extends StatelessWidget {
   @override
@@ -73,7 +74,7 @@ class TasksScreen extends StatelessWidget {
                   height: 10,
                 ),
                 SlidingSwitch(
-                  value: false,
+                  value: Provider.of<CustomTheme>(context).isTheme,
                   width: 125,
                   onChanged: (bool value) {
                     Provider.of<CustomTheme>(context, listen: false)
