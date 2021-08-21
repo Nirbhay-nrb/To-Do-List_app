@@ -32,12 +32,6 @@ class _HomeState extends State<Home> {
     super.initState();
     Provider.of<CustomTheme>(context, listen: false).getIsTheme();
     Provider.of<TaskData>(context, listen: false).getList();
-    // clear();
-  }
-
-  void clear() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    preferences.clear();
   }
 
   @override

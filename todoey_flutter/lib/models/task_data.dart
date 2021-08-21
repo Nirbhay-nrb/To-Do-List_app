@@ -4,6 +4,8 @@ import 'package:todoey_flutter/models/tasks.dart';
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 
+import '../theme.dart';
+
 class TaskData extends ChangeNotifier {
   List<Task> _tasks = [];
 
@@ -63,5 +65,13 @@ class TaskData extends ChangeNotifier {
       count++;
     }
     preferences.setInt('length', count);
+  }
+
+  void clear() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    _tasks.clear();
+    preferences.clear();
+    CustomTheme().setIsTheme();
+    notifyListeners();
   }
 }

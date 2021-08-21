@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:todoey_flutter/models/task_data.dart';
 import 'package:todoey_flutter/screens/add_task_screen.dart';
-import 'package:todoey_flutter/theme.dart';
+import 'package:todoey_flutter/screens/settings.dart';
 import 'package:todoey_flutter/widgets/tasks_list.dart';
 import 'package:provider/provider.dart';
-import 'package:sliding_switch/sliding_switch.dart';
-import 'package:todoey_flutter/main.dart';
+
+import '../theme.dart';
 
 class TasksScreen extends StatelessWidget {
   @override
@@ -35,22 +35,52 @@ class TasksScreen extends StatelessWidget {
             padding: EdgeInsets.only(
               top: 60,
               left: 30,
-              right: 30,
               bottom: 30,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                CircleAvatar(
-                  backgroundColor: Colors.white,
-                  radius: 30,
-                  child: IconTheme(
-                    data: Theme.of(context).iconTheme,
-                    child: Icon(
-                      Icons.list,
-                      size: 30,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CircleAvatar(
+                      backgroundColor: Colors.white,
+                      radius: 30,
+                      child: IconTheme(
+                        data: Theme.of(context).iconTheme,
+                        child: Icon(
+                          Icons.list,
+                          size: 30,
+                        ),
+                      ),
                     ),
-                  ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        FlatButton(
+                          materialTapTargetSize:
+                              MaterialTapTargetSize.shrinkWrap,
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Settings(),
+                              ),
+                            );
+                          },
+                          child: Icon(
+                            Icons.settings,
+                            color: Provider.of<CustomTheme>(context).isTheme
+                                ? Colors.white
+                                : Colors.white,
+                            size: 25,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
                 SizedBox(
                   height: 10,
@@ -72,36 +102,6 @@ class TasksScreen extends StatelessWidget {
                 ),
                 SizedBox(
                   height: 10,
-                ),
-                SlidingSwitch(
-                  value: Provider.of<CustomTheme>(context).isTheme,
-                  width: 125,
-                  onChanged: (bool value) {
-                    Provider.of<CustomTheme>(context, listen: false)
-                        .toggleTheme();
-                  },
-                  height: 25,
-                  animationDuration: const Duration(milliseconds: 100),
-                  onTap: () {},
-                  onDoubleTap: () {},
-                  onSwipe: () {},
-                  textOff: "Light",
-                  textOn: "Dark",
-                  colorOn: Provider.of<CustomTheme>(context).isTheme
-                      ? Colors.lightBlueAccent
-                      : Colors.white,
-                  colorOff: Provider.of<CustomTheme>(context).isTheme
-                      ? Color(0xff6682c0)
-                      : Color(0xffbdbdbd),
-                  background: Provider.of<CustomTheme>(context).isTheme
-                      ? Color(0xffe4e5eb)
-                      : Color(0xff9e9e9e),
-                  buttonColor: Provider.of<CustomTheme>(context).isTheme
-                      ? Color(0xfff7f5f7)
-                      : Color(0xff757575),
-                  inactiveColor: Provider.of<CustomTheme>(context).isTheme
-                      ? Color(0xff636f7b)
-                      : Color(0xff636f7b),
                 ),
               ],
             ),
