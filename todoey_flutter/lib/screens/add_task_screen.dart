@@ -43,6 +43,13 @@ class AddTaskScreen extends StatelessWidget {
                     ? Colors.black
                     : Colors.white,
               ),
+              onSubmitted: (value) {
+                Provider.of<TaskData>(context, listen: false)
+                    .addTask(newTaskTitle);
+                Provider.of<TaskData>(context, listen: false).setList();
+
+                Navigator.pop(context);
+              },
             ),
             SizedBox(
               height: 15,

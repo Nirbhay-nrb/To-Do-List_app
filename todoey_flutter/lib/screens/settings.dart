@@ -252,18 +252,16 @@ class _SettingsState extends State<Settings> {
               isVisible: dropDown2,
               height: 200,
               widgetToDisplay: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: Flexible(
-                      child: Text(
-                        'Todoey',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 40,
-                            fontFamily: 'Lobster'),
-                      ),
+                  Flexible(
+                    child: Text(
+                      'Todoey',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 40,
+                          fontFamily: 'Lobster'),
                     ),
                   ),
                   Flexible(
