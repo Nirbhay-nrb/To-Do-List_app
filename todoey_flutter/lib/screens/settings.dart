@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todoey_flutter/constants.dart';
-import 'package:todoey_flutter/models/settings_card.dart';
 import 'package:todoey_flutter/models/task_data.dart';
-import 'package:todoey_flutter/models/visible_bubble.dart';
+import 'package:todoey_flutter/widgets/settings_card.dart';
+import 'package:todoey_flutter/widgets/visible_bubble.dart';
 
 import '../theme.dart';
 
@@ -98,7 +98,7 @@ class _SettingsState extends State<Settings> {
                                   elevation: 10,
                                   color:
                                       Provider.of<CustomTheme>(context).isTheme
-                                          ? Color(0xFF039be5)
+                                          ? Color(0xFF29b6f6)
                                           : Color(0xFF9e9e9e),
                                   child: Padding(
                                     padding: EdgeInsets.all(8.0),
@@ -123,7 +123,7 @@ class _SettingsState extends State<Settings> {
                               child: Card(
                                 elevation: 10,
                                 color: Provider.of<CustomTheme>(context).isTheme
-                                    ? Color(0xFF039be5)
+                                    ? Color(0xFF29b6f6)
                                     : Color(0xFF9e9e9e),
                                 child: Padding(
                                   padding: EdgeInsets.all(8.0),
