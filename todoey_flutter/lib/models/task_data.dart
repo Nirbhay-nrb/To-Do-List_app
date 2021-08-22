@@ -46,10 +46,10 @@ class TaskData extends ChangeNotifier {
 
   void getList() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    int length = await preferences.getInt('length') ?? 0;
+    int length = preferences.getInt('length') ?? 0;
     for (int i = 0; i < length; i++) {
-      String newTaskTitle = await preferences.getString('task$i');
-      bool isChecked = await preferences.getBool('tasks$i') ?? false;
+      String newTaskTitle = preferences.getString('task$i');
+      bool isChecked = preferences.getBool('tasks$i') ?? false;
       final task = Task(name: newTaskTitle, isDone: isChecked);
       _tasks.add(task);
     }
@@ -69,9 +69,12 @@ class TaskData extends ChangeNotifier {
 
   void clear() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
+    bool isThemeNow = preferences.getBool('isTheme');
     _tasks.clear();
     preferences.clear();
-    CustomTheme().setIsTheme();
+    CustomTheme themeSetter = CustomTheme();
+    themeSetter.isTheme = isThemeNow;
+    themeSetter.setIsTheme();
     notifyListeners();
   }
 }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sliding_switch/sliding_switch.dart';
+import 'package:todoey_flutter/constants.dart';
+import 'package:todoey_flutter/models/settings_card.dart';
 import 'package:todoey_flutter/models/task_data.dart';
+import 'package:todoey_flutter/models/visible_bubble.dart';
 
 import '../theme.dart';
 
@@ -12,12 +14,20 @@ class Settings extends StatefulWidget {
 
 class _SettingsState extends State<Settings> {
   bool dropDown = false;
-  bool dropDown2 = true;
+  bool dropDown2 = false;
+
+  @override
+  void initState() {
+    dropDown = false;
+    dropDown2 = false;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Provider.of<CustomTheme>(context).isTheme
-          ? Color(0xFFbbdefb)
+          ? Colors.white
           : Color(0xFF424242),
       appBar: AppBar(
         title: Text(
@@ -37,302 +47,248 @@ class _SettingsState extends State<Settings> {
         padding: EdgeInsets.only(
           top: 10,
           bottom: 10,
-          left: 20,
-          right: 20,
+          left: 15,
+          right: 15,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Expanded(
-              child: Container(
-                child: FlatButton(
-                  padding: EdgeInsets.all(0),
+            Row(
+              children: [
+                SettingsCard(
                   onPressed: () {
-                    Provider.of<TaskData>(context, listen: false).clear();
-                  },
-                  child: Card(
-                    color: Colors.lightBlueAccent,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    child: Center(
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 20,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Clear Tasks',
-                              style: TextStyle(
-                                color: Colors.white,
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(
+                                10,
                               ),
                             ),
-                            // MaterialButton(
-                            //   color: Colors.lightBlueAccent,
-                            //   onPressed: () {
-                            //     Provider.of<TaskData>(context, listen: false)
-                            //         .clear();
-                            //   },
-                            //   child: Text(
-                            //     'Clear',
-                            //     style: TextStyle(
-                            //       color: Provider.of<CustomTheme>(context).isTheme
-                            //           ? Colors.black
-                            //           : Colors.white,
-                            //       fontSize: 18,
-                            //     ),
-                            //   ),
-                            // ),
+                          ),
+                          backgroundColor:
+                              Provider.of<CustomTheme>(context).isTheme
+                                  ? Colors.lightBlueAccent
+                                  : Color(0xFF616161),
+                          title: Center(
+                            child: Text(
+                              'Do you want to clear all tasks?',
+                              style: TextStyle(
+                                color: Provider.of<CustomTheme>(context).isTheme
+                                    ? Colors.white
+                                    : Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 24,
+                              ),
+                            ),
+                          ),
+                          actionsPadding: EdgeInsets.symmetric(
+                            horizontal: 32,
+                          ),
+                          actions: [
+                            FlatButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.all(5.0),
+                                child: Card(
+                                  elevation: 10,
+                                  color:
+                                      Provider.of<CustomTheme>(context).isTheme
+                                          ? Color(0xFF039be5)
+                                          : Color(0xFF9e9e9e),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Text(
+                                      'Cancel',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            FlatButton(
+                              onPressed: () {
+                                Provider.of<TaskData>(context, listen: false)
+                                    .clear();
+                                Navigator.pop(context);
+                              },
+                              child: Card(
+                                elevation: 10,
+                                color: Provider.of<CustomTheme>(context).isTheme
+                                    ? Color(0xFF039be5)
+                                    : Color(0xFF9e9e9e),
+                                child: Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Text(
+                                    'Clear All',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
                           ],
-                        ),
-                      ),
+                        );
+                      },
+                    );
+                  },
+                  contentToDisplay: [
+                    Icon(
+                      Icons.clear_all_rounded,
+                      color: Colors.white,
                     ),
-                  ),
+                    Text(
+                      'Clear All Tasks',
+                      style: kSettingsTextStyle,
+                    ),
+                  ],
                 ),
-              ),
-            ),
-            Expanded(
-              child: Container(
-                child: FlatButton(
-                  padding: EdgeInsets.all(0),
+                SettingsCard(
                   onPressed: () {
                     Provider.of<CustomTheme>(context, listen: false)
                         .toggleTheme();
                   },
-                  child: Card(
-                    color: Colors.lightBlueAccent,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
+                  contentToDisplay: [
+                    Icon(
+                      Provider.of<CustomTheme>(context).isTheme
+                          ? Icons.brightness_2
+                          : Icons.brightness_5,
+                      color: Colors.white,
                     ),
-                    child: Center(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            Provider.of<CustomTheme>(context).isTheme
-                                ? 'Tap for dark mode'
-                                : 'Tap for light mode',
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
-                          // SizedBox(
-                          //   height: 10,
-                          // ),
-                          // SlidingSwitch(
-                          //   value: Provider.of<CustomTheme>(context).isTheme,
-                          //   width: 50,
-                          //   onChanged: (bool value) {
-                          //     print(value);
-                          //     Provider.of<CustomTheme>(context, listen: false)
-                          //         .toggleTheme();
-                          //     print(
-                          //         Provider.of<CustomTheme>(context, listen: false)
-                          //             .isTheme);
-                          //   },
-                          //   height: 25,
-                          //   animationDuration: const Duration(milliseconds: 100),
-                          //   onTap: () {},
-                          //   onDoubleTap: () {},
-                          //   onSwipe: () {},
-                          //   textOff: "N",
-                          //   textOn: "Y",
-                          //   colorOn: Provider.of<CustomTheme>(context).isTheme
-                          //       ? Colors.lightBlueAccent
-                          //       : Colors.white,
-                          //   colorOff: Provider.of<CustomTheme>(context).isTheme
-                          //       ? Color(0xff6682c0)
-                          //       : Color(0xffbdbdbd),
-                          //   background: Provider.of<CustomTheme>(context).isTheme
-                          //       ? Color(0xffe4e5eb)
-                          //       : Color(0xff9e9e9e),
-                          //   buttonColor: Provider.of<CustomTheme>(context).isTheme
-                          //       ? Color(0xfff7f5f7)
-                          //       : Color(0xff757575),
-                          //   inactiveColor:
-                          //       Provider.of<CustomTheme>(context).isTheme
-                          //           ? Color(0xff636f7b)
-                          //           : Color(0xff636f7b),
-                          // ),
-                        ],
+                    Flexible(
+                      child: Text(
+                        Provider.of<CustomTheme>(context).isTheme
+                            ? 'Switch to dark mode'
+                            : 'Switch to light mode',
+                        textAlign: TextAlign.center,
+                        style: kSettingsTextStyle,
                       ),
                     ),
-                  ),
+                  ],
                 ),
-              ),
+              ],
             ),
-            Expanded(
-              child: Container(
-                child: FlatButton(
-                  padding: EdgeInsets.all(0),
+            Row(
+              children: [
+                SettingsCard(
                   onPressed: () {
                     setState(() {
                       dropDown = !dropDown;
-                      dropDown2 = !dropDown2;
+                      dropDown2 = false;
                     });
                   },
-                  child: Card(
-                    color: Colors.lightBlueAccent,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
+                  contentToDisplay: [
+                    Icon(
+                      Icons.delete,
+                      color: Colors.white,
                     ),
-                    child: Center(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Visibility(
-                            visible: dropDown2,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Deleting a particular task',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                // MaterialButton(
-                                //   onPressed: () {
-                                //     setState(() {
-                                //       dropDown = true;
-                                //       dropDown2 = false;
-                                //     });
-                                //   },
-                                //   materialTapTargetSize:
-                                //       MaterialTapTargetSize.shrinkWrap,
-                                //   child: Icon(
-                                //     Icons.keyboard_arrow_down,
-                                //     color: Provider.of<CustomTheme>(context)
-                                //             .isTheme
-                                //         ? Colors.black
-                                //         : Colors.white,
-                                //   ),
-                                // ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Visibility(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Flexible(
-                                  child: Text(
-                                    'Long press on a task to delete it.',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                                // MaterialButton(
-                                //   onPressed: () {
-                                //     setState(() {
-                                //       dropDown = false;
-                                //       dropDown2 = true;
-                                //     });
-                                //   },
-                                //   materialTapTargetSize:
-                                //       MaterialTapTargetSize.shrinkWrap,
-                                //   child: Icon(
-                                //     Icons.keyboard_arrow_left,
-                                //     color: Provider.of<CustomTheme>(context)
-                                //             .isTheme
-                                //         ? Colors.black
-                                //         : Colors.white,
-                                //   ),
-                                // ),
-                              ],
-                            ),
-                            visible: dropDown,
-                          ),
-                        ],
+                    Flexible(
+                      child: Text(
+                        'Deleting a particular task',
+                        textAlign: TextAlign.center,
+                        style: kSettingsTextStyle,
+                      ),
+                    ),
+                  ],
+                ),
+                SettingsCard(
+                  onPressed: () {
+                    setState(() {
+                      dropDown2 = !dropDown2;
+                      dropDown = false;
+                    });
+                  },
+                  contentToDisplay: [
+                    Icon(
+                      Icons.info,
+                      color: Colors.white,
+                    ),
+                    Flexible(
+                      child: Text(
+                        'About The App',
+                        textAlign: TextAlign.center,
+                        style: kSettingsTextStyle,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            VisibleBubble(
+              height: 120,
+              isVisible: dropDown,
+              widgetToDisplay: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Icon(
+                    Icons.list,
+                    color: Colors.white,
+                  ),
+                  Flexible(
+                    child: Text(
+                      'Long press on a task to delete it.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
-                ),
+                ],
               ),
             ),
-            Expanded(
-              child: Container(
-                child: Card(
-                  color: Colors.lightBlueAccent,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15.0),
-                  ),
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Clear Tasks',
-                          style: TextStyle(
+            VisibleBubble(
+              isVisible: dropDown2,
+              height: 200,
+              widgetToDisplay: Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: Flexible(
+                      child: Text(
+                        'Todoey',
+                        style: TextStyle(
                             color: Colors.white,
-                          ),
-                        ),
-                        MaterialButton(
-                          color: Colors.lightBlueAccent,
-                          onPressed: () {
-                            Provider.of<TaskData>(context, listen: false)
-                                .clear();
-                          },
-                          child: Text(
-                            'Clear',
-                            style: TextStyle(
-                              color: Provider.of<CustomTheme>(context).isTheme
-                                  ? Colors.black
-                                  : Colors.white,
-                              fontSize: 18,
-                            ),
-                          ),
-                        ),
-                      ],
+                            fontWeight: FontWeight.w700,
+                            fontSize: 40,
+                            fontFamily: 'Lobster'),
+                      ),
                     ),
                   ),
-                ),
-              ),
-            ),
-            Expanded(
-              child: Container(
-                child: Card(
-                  color: Colors.lightBlueAccent,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15.0),
-                  ),
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Clear Tasks',
-                          style: TextStyle(
-                            color: Colors.black,
-                          ),
-                        ),
-                        MaterialButton(
-                          color: Colors.lightBlueAccent,
-                          onPressed: () {
-                            Provider.of<TaskData>(context, listen: false)
-                                .clear();
-                          },
-                          child: Text(
-                            'Clear',
-                            style: TextStyle(
-                              color: Provider.of<CustomTheme>(context).isTheme
-                                  ? Colors.black
-                                  : Colors.white,
-                              fontSize: 18,
-                            ),
-                          ),
-                        ),
-                      ],
+                  Flexible(
+                    child: Text(
+                      'A To-Do List App',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w700,
+                        fontFamily: 'IndieFlower',
+                      ),
                     ),
                   ),
-                ),
+                  Flexible(
+                    child: Text(
+                      'Created by - Nirbhay Makhija',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w700,
+                        fontFamily: 'IndieFlower',
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
@@ -341,168 +297,3 @@ class _SettingsState extends State<Settings> {
     );
   }
 }
-/*
-
-            Flexible(
-              flex: 1,
-              child: Container(
-                padding: EdgeInsets.symmetric(
-                  vertical: 2,
-                ),
-                color: Provider.of<CustomTheme>(context).isTheme
-                    ? Colors.lightBlueAccent
-                    : Color(0xFF424242),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('Clear Tasks'),
-                    MaterialButton(
-                      onPressed: () {
-                        Provider.of<TaskData>(context, listen: false).clear();
-                      },
-                      child: Text(
-                        'Clear',
-                        style: TextStyle(
-                          color: Provider.of<CustomTheme>(context).isTheme
-                              ? Colors.black
-                              : Colors.white,
-                          fontSize: 18,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Divider(
-              height: 2,
-              color: Provider.of<CustomTheme>(context).isTheme
-                  ? Colors.black54
-                  : Colors.white,
-            ),
-            Flexible(
-              flex: 1,
-              child: Container(
-                padding: EdgeInsets.symmetric(
-                  vertical: 2,
-                ),
-                color: Provider.of<CustomTheme>(context).isTheme
-                    ? Colors.lightBlueAccent
-                    : Color(0xFF424242),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('Theme: '),
-                    SlidingSwitch(
-                      value: Provider.of<CustomTheme>(context).isTheme,
-                      width: 50,
-                      onChanged: (bool value) {
-                        print(value);
-                        Provider.of<CustomTheme>(context, listen: false)
-                            .toggleTheme();
-                        print(Provider.of<CustomTheme>(context, listen: false)
-                            .isTheme);
-                      },
-                      height: 25,
-                      animationDuration: const Duration(milliseconds: 100),
-                      onTap: () {},
-                      onDoubleTap: () {},
-                      onSwipe: () {},
-                      textOff: "N",
-                      textOn: "Y",
-                      colorOn: Provider.of<CustomTheme>(context).isTheme
-                          ? Colors.lightBlueAccent
-                          : Colors.white,
-                      colorOff: Provider.of<CustomTheme>(context).isTheme
-                          ? Color(0xff6682c0)
-                          : Color(0xffbdbdbd),
-                      background: Provider.of<CustomTheme>(context).isTheme
-                          ? Color(0xffe4e5eb)
-                          : Color(0xff9e9e9e),
-                      buttonColor: Provider.of<CustomTheme>(context).isTheme
-                          ? Color(0xfff7f5f7)
-                          : Color(0xff757575),
-                      inactiveColor: Provider.of<CustomTheme>(context).isTheme
-                          ? Color(0xff636f7b)
-                          : Color(0xff636f7b),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Divider(
-              height: 2,
-              color: Provider.of<CustomTheme>(context).isTheme
-                  ? Colors.black54
-                  : Colors.white,
-            ),
-            Flexible(
-              flex: 1,
-              child: Container(
-                padding: EdgeInsets.symmetric(
-                  vertical: 2,
-                ),
-                color: Provider.of<CustomTheme>(context).isTheme
-                    ? Colors.lightBlueAccent
-                    : Color(0xFF424242),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Deleting a particular task',
-                        ),
-                        MaterialButton(
-                          onPressed: () {
-                            setState(() {
-                              dropDown = !dropDown;
-                            });
-                          },
-                          materialTapTargetSize:
-                              MaterialTapTargetSize.shrinkWrap,
-                          child: Icon(
-                            Icons.keyboard_arrow_down,
-                            color: Provider.of<CustomTheme>(context).isTheme
-                                ? Colors.black
-                                : Colors.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Visibility(
-                      child: Text(
-                        'Long press on a task to delete it.',
-                        textAlign: TextAlign.start,
-                      ),
-                      visible: dropDown,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Divider(
-              height: 2,
-              color: Provider.of<CustomTheme>(context).isTheme
-                  ? Colors.black54
-                  : Colors.white,
-            ),
-            Flexible(
-              flex: 1,
-              child: Container(
-                padding: EdgeInsets.symmetric(
-                  vertical: 2,
-                ),
-                color: Provider.of<CustomTheme>(context).isTheme
-                    ? Colors.lightBlueAccent
-                    : Color(0xFF424242),
-                child: Text('Thanks!!'),
-              ),
-            ),
-
-*/
